@@ -5,6 +5,10 @@ dotenv.config()
 
 const PORT = process.env.PORT
 
+if (PORT === undefined) {
+  throw new Error('Missing PORT env variable.')
+}
+
 const app = express()
 app.disable('x-powered-by')
 

@@ -40,4 +40,9 @@ La idea de esta sección es dar mas comunicación sobre cada paso que se ha real
   - **¿Porque TypeScript?**:
     - Quizas sea algo prematuro, pero la previsión de requisitos dice que tendremos que crear patrones estructurales.
     - TypeScript nos permitirá crear interfaces y otros contratos que deben ser cumplidos, creando errores explicitos si no se cumplen.
--
+- Añadidas variables de entorno.
+- Añadido express, usando el puerto que se ha añadido en la variable de entorno `process.env.PORT`.
+
+### Commit #2: Add env guard
+
+- Añadida comprobación si no existe la variable de entorno `PORT`.
