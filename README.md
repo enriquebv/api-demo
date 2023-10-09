@@ -8,7 +8,7 @@ Prueba tecnica para senior back-end developer en Node.js
   - [x] Contraseñas cifradas
   - [x] Se devuelven tokens en JWT al hacer login.
 - **Operaciones CRUD:**
-  - [] Crear reservas como usuario.
+  - [ ] Crear reservas como usuario.
     - [] Fecha de reserva (inicio, fin).
     - [] Color deseado.
     - Las reservas tendran un precio computado en base a los dias reservados. El precio por día sera estatico.
