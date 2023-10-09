@@ -1,4 +1,4 @@
-import { PrismaClient, Role, User } from '@prisma/client'
+import { PrismaClient, UserRole as PrismaUserRole, User } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { PrismaErrorCodes } from '../lib/constants'
 import { UserEntity, UserRole, UserToCreateEntity } from '../entities/user.entity'
@@ -123,8 +123,8 @@ export default class UserRepository {
 
   private prismaToEntityRole(role: User['role']): UserEntity['role'] {
     const ROLES_DICTIONARY = {
-      [Role.ADMIN]: UserRole.ADMIN,
-      [Role.USER]: UserRole.USER,
+      [PrismaUserRole.ADMIN]: UserRole.ADMIN,
+      [PrismaUserRole.CUSTOMER]: UserRole.CUSTOMER,
     }
 
     return ROLES_DICTIONARY[role]
@@ -132,8 +132,8 @@ export default class UserRepository {
 
   private entityRoleToPrisma(role: UserEntity['role']): User['role'] {
     const ROLES_DICTIONARY = {
-      [UserRole.ADMIN]: Role.ADMIN,
-      [UserRole.USER]: Role.USER,
+      [UserRole.ADMIN]: PrismaUserRole.ADMIN,
+      [UserRole.CUSTOMER]: PrismaUserRole.CUSTOMER,
     }
 
     return ROLES_DICTIONARY[role]
