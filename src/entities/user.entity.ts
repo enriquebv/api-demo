@@ -4,7 +4,7 @@ export enum UserRole {
 }
 
 export interface UserEntity {
-  id: number
+  id: string
   name: string
   email: string
   password: string

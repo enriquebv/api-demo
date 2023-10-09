@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { ForbiddenError, UnauthorizedError } from '../error-handler'
 import { verifyToken } from './token'
-import { UserRole } from '../entities/user.entity'
+import { UserEntity, UserRole } from '../entities/user.entity'
 import { userRepository } from '../repositories'
 import { UserNotFoundError } from '../repositories/user.repository'
 import { EXPIRED_TOKEN_ERROR_MESSAGE } from './constants'
@@ -16,7 +16,7 @@ export async function withSession(req: Request, res: Response, next: NextFunctio
   const token = bearer.split(' ')[1]
 
   try {
-    const session = await verifyToken<{ id: number }>(token)
+    const session = await verifyToken<{ id: UserEntity['id'] }>(token)
     const user = await userRepository.findById(session.id)
 
     req.user = {

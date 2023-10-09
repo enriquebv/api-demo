@@ -127,7 +127,7 @@ describe('/api/user', () => {
 
     expect(response.status).toBe(400)
     expect(response.body).toMatchSchema(API_ERROR_SCHEMA)
-    expect(response.body.error.reasons).toContain('id: Expected number, received nan')
+    expect(response.body.error.reasons).toContain('id: Invalid uuid')
   })
 
   it('/user delete with valid id returns validation error', async () => {

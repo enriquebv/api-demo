@@ -31,7 +31,7 @@ export async function addUser(options: {
   email: string
   password: string
   admin?: boolean
-}): Promise<number> {
+}): Promise<UserEntity['id']> {
   const { id } = await userRepository.create({
     name: options.name,
     email: options.email,
