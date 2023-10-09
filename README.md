@@ -2,6 +2,44 @@
 
 Prueba tecnica para senior back-end developer en Node.js
 
+## Roadmap
+
+- **Registro y login de usuarios**
+  - [x] Contraseñas cifradas
+  - [x] Se devuelven tokens en JWT al hacer login.
+- **Operaciones CRUD:**
+  - [] Crear reservas como usuario.
+    - [] Fecha de reserva (inicio, fin).
+    - [] Color deseado.
+    - Las reservas tendran un precio computado en base a los dias reservados. El precio por día sera estatico.
+    - Las reservas tendran un estado `status` computado en base a las fecha de las reserva.
+  - [] Editar reservas.
+    - [] Cambiar fecha
+    - [] Cambiar color
+  - [] "Cancelar" reservas antes de que sucedan.
+    - [] Como usuario las propias, si se hace 30 minutos antes (o anterior) de que empiece la misma.
+    - [] Como admin cualquiera.
+- **Sistema de busqueda**:
+  - Por propiedades:
+    - Fecha (rango)
+    - Precio (rango)
+    - Estado (multiple)
+  - [] Busqueda incluyente (las reservas deben tener todas las propiedades escogidas para mostrarse.)
+  - [] Busqueda excluyente (las reservas deben tener todas las propiedades escogidas para mostrarse)
+- **Base de datos**
+  - [x] Postgres
+  - [x] ORM (Prisma)
+- **Tests**
+  - [x] Implementar tests de integración
+  - [] Crear informe de cobertura
+  - [] Pipeline de CI (nice to have)
+- **Seguridad**
+  - [x] Error handling.
+    - [] Log de errores con UUID.
+  - [x] Validar datos desde el exterior.
+  - [] CORS
+  - [] HTTPS
+
 ## Como usar
 
 ### Prerequisitos
