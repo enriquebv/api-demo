@@ -16,7 +16,7 @@ export async function withSession(req: Request, res: Response, next: NextFunctio
   const token = bearer.split(' ')[1]
 
   try {
-    const session = await verifyToken<{ id: number; role: UserRole }>(token)
+    const session = await verifyToken<{ id: number }>(token)
     const user = await userRepository.findById(session.id)
 
     req.user = {
