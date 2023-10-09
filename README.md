@@ -46,6 +46,20 @@ Este comando ejecuta los tests de integración y unitarios. Recordemos que para 
 npm run test
 ```
 
+#### Base de datos
+
+##### Lanzar migraciones
+
+Ante cualquier cambio que se haya realizado en la base de datos (tablas, columnas, etc), se añadiran archivos `.sql` que contengan esos cambios. Para aplicarlos, con ejecutar el comando `npm run db:migrate` actualizará al base de datos.
+
+##### Hidratar la base de datos
+
+Si se necesitan, se pueden añadir datos de ejemplo introducidos previamente en un [_seeder_](./prisma/seed.ts), ejecutando el comando `npm run db:seed`. Actualmente se añade una cuenta de administrador con el email `admin@test.com` y la contraseña `admin` (con propositos demostrativos, no usar en producción).
+
+##### Inspeccionar la base de datos
+
+Aunque se puede utilizar herramientas como DataGrip o DBeaver para inspeccionar la base de datos postgres, no es necesario en este proyecto. Ejecutando el comando `npm run db:inspect` se accederá a un editor de base de datos en el navegador, para realizar operaciones rapidas (eliminar registros, cambiar datos, etc).
+
 #### Compilar TypeScript
 
 En producción se ejecuta código JavaScript, mientras que en desarrollo se desarrolla con TypeScript. Para compilar este codigo a JavaScript, ejecutaremos `npm run build`. Esto generará una carpeta `dist`, que es una copia de `src` pero en JavaScript. Si existen errores de tipos fallará esta compilación de forma intencionada, no debería desplegarse código con errores.

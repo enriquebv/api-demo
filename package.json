@@ -10,7 +10,13 @@
     "dev": "nodemon ./src/index.ts",
     "build": "tsc",
     "start": "yarn build && node ./dist/index.js",
-    "test": "jest"
+    "test": "jest",
+    "db:seed": "prisma db seed",
+    "db:migrate": "prisma db push",
+    "db:inspect": "prisma studio"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
