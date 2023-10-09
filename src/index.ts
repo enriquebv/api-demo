@@ -1,17 +1,8 @@
-import express from 'express'
-import dotenv from 'dotenv'
+import { createServer } from './server'
+import getEnvVariable from './lib/env'
 
-dotenv.config()
+const PORT = getEnvVariable('PORT')
 
-const PORT = process.env.PORT
-
-if (PORT === undefined) {
-  throw new Error('Missing PORT env variable.')
-}
-
-const app = express()
-app.disable('x-powered-by')
-
-app.get('/', (_, res) => res.send({ ok: true }))
+const app = createServer()
 
 app.listen(PORT, () => console.log('Server started at: http://localhost:%d', PORT))
