@@ -48,3 +48,16 @@ export async function addUser(options: {
 export async function getAdminToken(adminId: UserEntity['id']): Promise<string> {
   return (await createUserStatefulTokenUseCase(adminId)).token
 }
+
+export function strictSchema(schema: {
+  type: 'object'
+  properties: Record<string, unknown>
+  required?: string[]
+  aditionalProperties?: boolean
+}) {
+  return {
+    required: Object.keys(schema.properties),
+    additionalProperties: false,
+    ...schema,
+  }
+}

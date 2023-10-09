@@ -1,13 +1,13 @@
 import request from 'supertest'
 import { Application } from 'express'
 import { type Server } from 'http'
-import { matchersWithOptions } from 'jest-json-schema'
+import { matchers } from 'jest-json-schema'
 import { userRepository } from '../repositories'
-import { API_ERROR_SCHEMA } from './schemas'
+import { API_ERROR_SCHEMA, API_TOKEN_SCHEMA } from './schemas'
 import { CUSTOMER_LOGIN_FIXTURE, CUSTOMER_REGISTRATION_FIXTURE, ADMIN_FIXTURE } from './fixtures'
-import { addUser, getAdminToken, createTestServer } from './helpers'
+import { addUser, getAdminToken, createTestServer, strictSchema } from './helpers'
 
-expect.extend(matchersWithOptions({ strict: true } as any))
+expect.extend(matchers)
 
 describe('/api/user', () => {
   let app: Application
@@ -89,13 +89,7 @@ describe('/api/user', () => {
     const response = await fetchers.register(CUSTOMER_REGISTRATION_FIXTURE)
 
     expect(response.status).toBe(200)
-    expect(response.body).toMatchSchema({
-      type: 'object',
-      properties: {
-        token: { type: 'string' },
-        expiresAt: { type: 'string' },
-      },
-    })
+    expect(response.body).toMatchSchema(API_TOKEN_SCHEMA)
   })
 
   it('/register should return bad request if email already exists', async () => {
@@ -110,13 +104,7 @@ describe('/api/user', () => {
     const response = await fetchers.login(CUSTOMER_LOGIN_FIXTURE)
 
     expect(response.status).toBe(200)
-    expect(response.body).toMatchSchema({
-      type: 'object',
-      properties: {
-        token: { type: 'string' },
-        expiresAt: { type: 'string' },
-      },
-    })
+    expect(response.body).toMatchSchema(API_TOKEN_SCHEMA)
   })
 
   it('/login with incorrect password should returns unauthorized', async () => {
@@ -131,13 +119,7 @@ describe('/api/user', () => {
     const response = await fetchers.login(CUSTOMER_LOGIN_FIXTURE)
 
     expect(response.status).toBe(200)
-    expect(response.body).toMatchSchema({
-      type: 'object',
-      properties: {
-        token: { type: 'string' },
-        expiresAt: { type: 'string' },
-      },
-    })
+    expect(response.body).toMatchSchema(API_TOKEN_SCHEMA)
   })
 
   it('/user delete with invalid id returns validation error', async () => {
