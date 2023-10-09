@@ -11,5 +11,5 @@ export default async function registerUseCase(userToCreate: UserToCreateEntity, 
     password: await hashPassword(password),
   })
 
-  return await createUserStatefulTokenUseCase(user)
+  return await createUserStatefulTokenUseCase(user.id)
 }

@@ -19,5 +19,5 @@ export default async function loginUseCase(
     throw new InvalidPasswordError()
   }
 
-  return await createUserStatefulTokenUseCase(user)
+  return await createUserStatefulTokenUseCase(user.id)
 }
