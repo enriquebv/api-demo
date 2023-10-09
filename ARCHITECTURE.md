@@ -41,6 +41,7 @@ No, y muchas veces perseguir este objetivo crea ineficiencias, diseños especula
 │  ├─ entities/     👈🏻 Tipos e interfaces del dominio
 │  ├─ lib/          👈🏻 Lógica que no encaja en el resto de secciones
 │  ├─ repositories/ 👈🏻 Acceso a APIs y bases de datos
+│  ├─ test/         👈🏻 Tests de integración (API)
 │  ├─ use-cases/    👈🏻 Casos de uso
 │  ├─ index.ts      👈🏻 Punto de entrada de la aplicación
 │  ├─ server.ts     👈🏻 Donde construimos las rutas de express
