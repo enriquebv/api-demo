@@ -18,9 +18,18 @@ model User {
   email String  @unique
   password String
   role UserRole @default(CUSTOMER)
-  reservations Reservation[]
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
+
+  reservations Reservation[]
+}
+
+model Car {
+  id String @id @default(uuid())
+  name String
+  pricePerMonth Int
+  
+  reservations Reservation[]
 }
 
 model Reservation {
@@ -29,8 +38,11 @@ model Reservation {
   startsAt DateTime
   endsAt DateTime
   customerId String
-  customer User @relation(fields: [customerId], references: [id])
+  carId String
   priceAtReservation Int
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
+
+  customer User @relation(fields: [customerId], references: [id])
+  car Car @relation(fields: [carId], references: [id])
 }
