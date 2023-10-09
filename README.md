@@ -99,3 +99,19 @@ La idea de esta sección es dar mas comunicación sobre cada paso que se ha real
   - Un validador muy sencillo, se define la forma del dato esperado, incluso pudiendo definir si esperamos un email, el numero maximo o minimo de caracteres, si es opcional, etc.
   - Los errores de validación pasan directamente al error handler global, y los pasa como respuestas `400` (BadRquest).
 - Añadimos tests de integración de estos endpoints con `jest` y `supertest`.
+
+### Endpoint de eliminación de usuarios
+
+- Se ha añadido en endpoint `DELETE /api/users/:id` para eliminar usuarios. Solo funciona para usuarios admins.
+- Se han añadido dos middlewares:
+
+  - `withSession`: Se encarga de leer el JWT stateful que generamos previamente en el login/registro, y añade una propiedad `user` al objeto `Request` de express, en concepto de sesión de usuario.
+  - `onlyAdmin`: En base a la sesión, se determina si la petición puede continuar al controlador, si no es así, se recibira un `Unauthorized 401`.
+
+  ```ts
+  router.post('/user/register', registerController) // 👈🏻 Sin sesión.
+  router.post('/user/login', loginController) // 👈🏻 Sin sesión.
+  router.delete('/user/:id', withSession, onlyAdmin, removeUserController) // 👈🏻 Con sesión, y solo para administradores.
+  ```
+
+> **👁️ Ojo**: Desde la concepción del proyecto, valoré la opción de hacer un token stateful, que es lo que existe hasta ahora. En principio tenia todo lo necesario y eliminaba la _complejidad accidental_ de crear un sistema de sesiones más complejo (memcached, Redis, etc), pero durante el desarrollo de este endpoint securizado me he dado cuenta de que el middleware `onlyAdmin` comprobaría en base al contenido del un token que dura 7 dias, por lo que aunque eliminasemos ese usuario, quien tenga ese token podrá seguir actuando como administrador. Esto es un problema de seguridad, ya que al no contar con un sistema de tokens mas complejo (acceso/refresco, se ha elegido un solo token por tiempos y velocidad de implementación) y al no comprobar si existe aun el usuario, o si sigue siendo admin, es un vector de ataque importante.
