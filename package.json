@@ -11,8 +11,8 @@
     "build": "tsc",
     "start": "yarn build && node ./dist/index.js",
     "test": "jest",
-    "db:seed": "prisma db seed",
     "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
     "db:inspect": "prisma studio"
   },
   "prisma": {
