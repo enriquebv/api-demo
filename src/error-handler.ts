@@ -3,6 +3,7 @@ import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
 import { ZodError } from 'zod'
 import { UserNotFoundError } from './repositories/user.repository'
 import { InvalidPasswordError } from './use-cases/login.use-case'
+import { EXPIRED_TOKEN_ERROR_MESSAGE } from './lib/constants'
 
 class HTTPError extends Error {
   code: string
@@ -85,7 +86,7 @@ export default function expressErrorHandler(error: Error, req: Request, res: Res
     }
 
     if (error instanceof TokenExpiredError) {
-      reason = `Token was expired at ${error.expiredAt.toISOString()}`
+      reason = EXPIRED_TOKEN_ERROR_MESSAGE
     }
 
     response.error = {

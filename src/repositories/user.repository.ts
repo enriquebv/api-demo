@@ -1,6 +1,6 @@
 import { PrismaClient, Role, User } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
-import { PrismaErrorCodes } from '../lib/enums'
+import { PrismaErrorCodes } from '../lib/constants'
 import { UserEntity, UserRole, UserToCreateEntity } from '../entities/user.entity'
 
 export class AlreadyUsedEmailError extends Error {

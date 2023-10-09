@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from 'express'
 import { ForbiddenError, UnauthorizedError } from '../error-handler'
 import { verifyToken } from './token'
 import { UserRole } from '../entities/user.entity'
+import { userRepository } from '../repositories'
+import { UserNotFoundError } from '../repositories/user.repository'
+import { EXPIRED_TOKEN_ERROR_MESSAGE } from './constants'
 
 export async function withSession(req: Request, res: Response, next: NextFunction) {
   const bearer = req.headers.authorization as string
@@ -14,14 +17,19 @@ export async function withSession(req: Request, res: Response, next: NextFunctio
 
   try {
     const session = await verifyToken<{ id: number; role: UserRole }>(token)
+    const user = await userRepository.findById(session.id)
 
     req.user = {
       id: session.id,
-      role: session.role,
+      role: user.role,
     }
 
     next()
   } catch (error) {
+    if (error instanceof UserNotFoundError) {
+      return next(new UnauthorizedError([EXPIRED_TOKEN_ERROR_MESSAGE]))
+    }
+
     next(error)
   }
 }
