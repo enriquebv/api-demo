@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
+import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
 import { ZodError } from 'zod'
+import { UserNotFoundError } from './repositories/user.repository'
+import { InvalidPasswordError } from './use-cases/login.use-case'
 
 class HTTPError extends Error {
   code: string
@@ -25,7 +28,16 @@ export class UnauthorizedError extends HTTPError {
   reasons: string[]
 
   constructor(reasons: string[]) {
-    super('BadRequest', 401)
+    super('Unauthorized', 401)
+    this.reasons = reasons
+  }
+}
+
+export class ForbiddenError extends HTTPError {
+  reasons: string[]
+
+  constructor(reasons: string[]) {
+    super('Forbidden', 403)
     this.reasons = reasons
   }
 }
@@ -57,6 +69,37 @@ export default function expressErrorHandler(error: Error, req: Request, res: Res
     response.error = {
       code: 'BadRequest',
       reasons: error.issues.map((issue) => `${issue.path.join('.')}: ${issue.message}`),
+    }
+  }
+
+  const isUnauthorizedError =
+    error instanceof InvalidPasswordError || error instanceof TokenExpiredError || error instanceof JsonWebTokenError
+
+  if (isUnauthorizedError) {
+    status = 401
+
+    let reason = error.message
+
+    if (error instanceof JsonWebTokenError) {
+      reason = 'Token is not valid.'
+    }
+
+    if (error instanceof TokenExpiredError) {
+      reason = `Token was expired at ${error.expiredAt.toISOString()}`
+    }
+
+    response.error = {
+      code: 'Unauthorized',
+      reasons: [reason],
+    }
+  }
+
+  const isNotFoundError = error instanceof UserNotFoundError
+  if (isNotFoundError) {
+    status = 404
+    response.error = {
+      code: 'NotFound',
+      reasons: [error.message],
     }
   }
 

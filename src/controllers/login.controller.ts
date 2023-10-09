@@ -12,17 +12,9 @@ const LoginBodyValidator = z.object({
 const loginController = asyncController(async (req, res) => {
   const body = LoginBodyValidator.parse(req.body)
 
-  try {
-    const response = await loginUseCase(body, userRepository)
+  const response = await loginUseCase(body, userRepository)
 
-    res.send(response)
-  } catch (error) {
-    if (error instanceof InvalidPasswordError) {
-      throw new UnauthorizedError(['Invalid password'])
-    }
-
-    throw error
-  }
+  res.send(response)
 })
 
 export default loginController

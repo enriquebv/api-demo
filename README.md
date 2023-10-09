@@ -54,7 +54,7 @@ Ante cualquier cambio que se haya realizado en la base de datos (tablas, columna
 
 ##### Hidratar la base de datos
 
-Si se necesitan, se pueden añadir datos de ejemplo introducidos previamente en un [_seeder_](./prisma/seed.ts), ejecutando el comando `npm run db:seed`. Actualmente se añade una cuenta de administrador con el email `admin@test.com` y la contraseña `admin` (con propositos demostrativos, no usar en producción).
+Si se necesitan, se pueden añadir datos de ejemplo introducidos previamente en un [_seeder_](./prisma/seed.ts), ejecutando el comando `npm run db:seed`. Actualmente se añade una cuenta de administrador con el email `admin@test.com` y la contraseña `Admin1` (con propositos demostrativos, no usar en producción).
 
 ##### Inspeccionar la base de datos
 

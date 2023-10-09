@@ -1,4 +1,4 @@
-import jwt, { decode } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import getEnvVariable from './env'
 
 const JWT_SECRET = getEnvVariable('JWT_SECRET')
@@ -34,6 +34,14 @@ export async function buildToken<Content extends object>(
   })
 }
 
-export function verifyToken(token: string): boolean {
-  return false
+export async function verifyToken<Content>(token: string): Promise<Content> {
+  return new Promise((resolve, reject) =>
+    jwt.verify(token, JWT_SECRET, (error, decoded) => {
+      if (error) {
+        return reject(error)
+      }
+
+      resolve(decoded as Content)
+    })
+  )
 }
