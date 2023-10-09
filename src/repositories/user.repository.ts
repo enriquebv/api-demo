@@ -1,4 +1,4 @@
-import { PrismaClient, User } from '@prisma/client'
+import { PrismaClient, Role, User } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { PrismaErrorCodes } from '../lib/enums'
 import { UserEntity, UserRole, UserToCreateEntity } from '../entities/user.entity'
@@ -87,16 +87,55 @@ export default class UserRepository {
     }
   }
 
-  async removeByEmail(email: string) {
-    await this.prisma.user.delete({ where: { email } })
+  async setRole(id: UserEntity['id'], role: UserRole) {
+    await this.prisma.user.update({ where: { id }, data: { role: this.entityRoleToPrisma(role) } })
   }
 
-  private prismaToEntityRole(prismaUserRole: User['role']): UserRole {
+  async removeById(id: UserEntity['id']) {
+    try {
+      await this.prisma.user.delete({ where: { id } })
+    } catch (error) {
+      const isRecordNotExistError =
+        error instanceof PrismaClientKnownRequestError && error.code === PrismaErrorCodes.RECORD_NOT_EXIST
+
+      if (isRecordNotExistError) {
+        throw new UserNotFoundError()
+      }
+
+      throw error
+    }
+  }
+
+  async removeByEmail(email: string) {
+    try {
+      await this.prisma.user.delete({ where: { email } })
+    } catch (error) {
+      const isRecordNotExistError =
+        error instanceof PrismaClientKnownRequestError && error.code === PrismaErrorCodes.RECORD_NOT_EXIST
+
+      if (isRecordNotExistError) {
+        throw new UserNotFoundError()
+      }
+
+      throw error
+    }
+  }
+
+  private prismaToEntityRole(role: User['role']): UserEntity['role'] {
     const ROLES_DICTIONARY = {
-      ADMIN: UserRole.ADMIN,
-      USER: UserRole.USER,
+      [Role.ADMIN]: UserRole.ADMIN,
+      [Role.USER]: UserRole.USER,
     }
 
-    return ROLES_DICTIONARY[prismaUserRole]
+    return ROLES_DICTIONARY[role]
+  }
+
+  private entityRoleToPrisma(role: UserEntity['role']): User['role'] {
+    const ROLES_DICTIONARY = {
+      [UserRole.ADMIN]: Role.ADMIN,
+      [UserRole.USER]: Role.USER,
+    }
+
+    return ROLES_DICTIONARY[role]
   }
 }
