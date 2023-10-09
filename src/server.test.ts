@@ -4,6 +4,8 @@ import { type Server } from 'http'
 import { createServer } from './server'
 import { matchersWithOptions } from 'jest-json-schema'
 import { userRepository } from './repositories'
+import { hashPassword } from './lib/password'
+import { UserRole } from './entities/user.entity'
 
 expect.extend(matchersWithOptions({ strict: true } as any))
 
@@ -36,6 +38,29 @@ describe('API integration tests', () => {
   let app: Application
   let server: Server
 
+  async function addUser(options: { name: string; email: string; password: string; admin?: boolean }): Promise<number> {
+    const { id } = await userRepository.create({
+      name: options.name,
+      email: options.email,
+      password: await hashPassword(options.password),
+    })
+
+    if (options.admin === true) {
+      await userRepository.setRole(id, UserRole.ADMIN)
+    }
+
+    return id
+  }
+
+  async function getAdminToken() {
+    const response = await request(app).post('/api/user/login').send({
+      email: 'admin@admin.admin',
+      password: 'Admin1',
+    })
+
+    return response.body.token
+  }
+
   beforeAll(async () => {
     async function setupServer() {
       app = createServer()
@@ -45,6 +70,12 @@ describe('API integration tests', () => {
       })
     }
 
+    await addUser({
+      name: 'Admin',
+      email: 'admin@admin.admin',
+      password: 'Admin1',
+      admin: true,
+    })
     await setupServer()
   })
 
@@ -55,6 +86,9 @@ describe('API integration tests', () => {
       },
       login() {
         return request(app).post('/api/user/login')
+      },
+      removeUser(id: string) {
+        return request(app).delete(`/api/user/${id}`)
       },
     }
 
@@ -141,6 +175,7 @@ describe('API integration tests', () => {
 
       expect(response.status).toBe(401)
       expect(response.body).toMatchSchema(ERROR_SCHEMA)
+      expect(response.body.error.reasons).toContain('Invalid password provided.')
     })
 
     it('/login with correct password should returns token', async () => {
@@ -155,10 +190,37 @@ describe('API integration tests', () => {
         },
       })
     })
+
+    it('/user delete with invalid id returns validation error', async () => {
+      const response = await ENDPOINTS.removeUser('10e')
+        .set({ Authorization: `Bearer ${await getAdminToken()}` })
+        .send()
+
+      expect(response.status).toBe(400)
+      expect(response.body).toMatchSchema(ERROR_SCHEMA)
+      expect(response.body.error.reasons).toContain('id: Expected number, received nan')
+    })
+
+    it('/user delete with valid id returns validation error', async () => {
+      const idToRemove = await addUser({ name: 'TempUser', email: 'temp.user@test.test', password: 'tempuser' })
+      const response = await ENDPOINTS.removeUser(String(idToRemove))
+        .set({ Authorization: `Bearer ${await getAdminToken()}` })
+        .send()
+
+      expect(response.status).toBe(200)
+    })
+  })
+
+  it('request with required token but without authorization headers should return a unauthorized error', async () => {
+    const response = await request(app).delete('/api/user/1000')
+
+    expect(response.status).toBe(401)
+    expect(response.body.error.reasons).toContain('Missing header "Authorization" with token.')
   })
 
   afterAll(async () => {
     server.close()
     await userRepository.removeByEmail(LOGIN_FIXTURE.email)
+    await userRepository.removeByEmail('admin@admin.admin')
   })
 })
