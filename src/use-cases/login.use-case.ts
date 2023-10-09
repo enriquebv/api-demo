@@ -12,7 +12,7 @@ export default async function loginUseCase(
   credentials: { email: string; password: string },
   userRepository: UserRepository
 ) {
-  const user = await userRepository.getUserByEmail(credentials.email)
+  const user = await userRepository.findByEmail(credentials.email)
   const isValidPassword = await compareHashedPassword(credentials.password, user.password)
 
   if (!isValidPassword) {

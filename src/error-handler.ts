@@ -21,6 +21,15 @@ export class BadRequestError extends HTTPError {
   }
 }
 
+export class UnauthorizedError extends HTTPError {
+  reasons: string[]
+
+  constructor(reasons: string[]) {
+    super('BadRequest', 401)
+    this.reasons = reasons
+  }
+}
+
 export default function expressErrorHandler(error: Error, req: Request, res: Response, next: NextFunction) {
   if (process.env.NODE_ENV === 'development') {
     console.error(error)

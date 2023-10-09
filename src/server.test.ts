@@ -136,6 +136,13 @@ describe('API integration tests', () => {
       })
     })
 
+    it('/login with incorrect password should returns unauthorized', async () => {
+      const response = await ENDPOINTS.login().send({ ...LOGIN_FIXTURE, password: 'test' })
+
+      expect(response.status).toBe(401)
+      expect(response.body).toMatchSchema(ERROR_SCHEMA)
+    })
+
     it('/login with correct password should returns token', async () => {
       const response = await ENDPOINTS.login().send(LOGIN_FIXTURE)
 
@@ -152,6 +159,6 @@ describe('API integration tests', () => {
 
   afterAll(async () => {
     server.close()
-    await userRepository.removeUserByEmail(LOGIN_FIXTURE.email)
+    await userRepository.removeByEmail(LOGIN_FIXTURE.email)
   })
 })

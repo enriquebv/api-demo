@@ -18,7 +18,45 @@ export class UserNotFoundError extends Error {
 export default class UserRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async createUser(user: UserToCreateEntity): Promise<UserEntity> {
+  async findById(id: UserEntity['id']): Promise<UserEntity> {
+    const found = await this.prisma.user.findFirst({
+      where: { id },
+    })
+
+    if (found === null) {
+      throw new UserNotFoundError()
+    }
+
+    return {
+      id,
+      name: found.name,
+      email: found.email,
+      password: found.password,
+      role: this.prismaToEntityRole(found.role),
+    }
+  }
+
+  async findByEmail(email: string): Promise<UserEntity> {
+    const found = await this.prisma.user.findFirst({
+      where: { email },
+    })
+
+    if (found === null) {
+      throw new UserNotFoundError()
+    }
+
+    const entity: UserEntity = {
+      id: found.id,
+      name: found.name,
+      email: found.email,
+      password: found.password,
+      role: this.prismaToEntityRole(found.role),
+    }
+
+    return entity
+  }
+
+  async create(user: UserToCreateEntity): Promise<UserEntity> {
     try {
       const { id, name, email, role, password } = await this.prisma.user.create({
         data: {
@@ -49,27 +87,7 @@ export default class UserRepository {
     }
   }
 
-  async getUserByEmail(email: string): Promise<UserEntity> {
-    const stored = await this.prisma.user.findFirst({
-      where: { email },
-    })
-
-    if (stored === null) {
-      throw new UserNotFoundError()
-    }
-
-    const entity: UserEntity = {
-      id: stored.id,
-      name: stored.name,
-      email: stored.email,
-      password: stored.password,
-      role: this.prismaToEntityRole(stored.role),
-    }
-
-    return entity
-  }
-
-  async removeUserByEmail(email: string) {
+  async removeByEmail(email: string) {
     await this.prisma.user.delete({ where: { email } })
   }
 

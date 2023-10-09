@@ -6,7 +6,7 @@ import createUserStatefulTokenUseCase from './create-user-stateful-token.use-cas
 export default async function registerUseCase(userToCreate: UserToCreateEntity, userRepository: UserRepository) {
   const { password, ...rest } = userToCreate
 
-  const user = await userRepository.createUser({
+  const user = await userRepository.create({
     ...rest,
     password: await hashPassword(password),
   })
