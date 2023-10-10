@@ -1,6 +1,6 @@
 import { ReservationEntity } from '../entities/reservation.entity'
 import { UserEntity, UserRole } from '../entities/user.entity'
-import { WithoutPermissionError } from '../lib/base-errors'
+import { ExpiredError, WithoutPermissionError } from '../lib/base-errors'
 import { reservationRepository, userRepository } from '../repositories'
 
 export class CanNotCancelReservationError extends WithoutPermissionError {
@@ -9,7 +9,7 @@ export class CanNotCancelReservationError extends WithoutPermissionError {
   }
 }
 
-export class AlreadyCancelledReservationError extends Error {
+export class AlreadyCancelledReservationError extends ExpiredError {
   constructor() {
     super('Already cancelled reservation.')
   }

@@ -81,11 +81,12 @@ Previamente [compilado el código TypeScript](#compilar-typescript), se lanzarí
     - [x] Los periodos de reserva deben ser cada 30 días. Si se eligen 31 días, se reservan 2 meses (60 días).
     - [x] Las reservas tendran un estado `status` computado en base a las fecha de las reserva.
   - [x] Editar reservas.
+    - [ ] No se puede editar una reserva cancelada (ni por admins).
     - [x] Cambiar fecha de reserva (debe cambiar el precio)
     - [x] Cambiar coche (debe cambiar el precio)
-  - [ ] "Cancelar" reservas
-    - [ ] Como usuario las propias, si se hace 30 minutos antes (o anterior) de que empiece la misma.
-    - [ ] Como admin cualquiera.
+  - [x] "Cancelar" reservas
+    - [x] Como usuario las propias, si se hace 30 minutos antes (o anterior) de que empiece la misma.
+    - [x] Como admin cualquiera.
 - **Sistema de busqueda**:
   - Por propiedades:
     - Fecha (rango)

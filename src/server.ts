@@ -7,7 +7,7 @@ import registerController from './controllers/register.controller'
 import removeUserController from './controllers/remove-user.controller'
 import carListController from './controllers/cars-list.controller'
 import customerReserveCarController from './controllers/customer-reserve-car.controller'
-import userUpdateCarReserveController from './controllers/edit-car-reserve.controller'
+import userUpdateCarReservationController from './controllers/user-update-car-reservation.controller'
 import userCancelReservationController from './controllers/user-cancel-reservation.controller'
 
 export function createServer() {
@@ -25,7 +25,7 @@ export function createServer() {
   router.get('/car', carListController)
   router.post('/car/:id/reservation', withSession, customerReserveCarController)
 
-  router.put('/reservation/:id', withSession, userUpdateCarReserveController)
+  router.put('/reservation/:id', withSession, userUpdateCarReservationController)
   router.post('/reservation/:id/cancel', withSession, userCancelReservationController)
 
   app.use('/api', router)

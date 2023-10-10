@@ -1,28 +1,39 @@
 import { ReservationEntity } from '../entities/reservation.entity'
 import { UserEntity, UserRole } from '../entities/user.entity'
-import { WithoutPermissionError } from '../lib/base-errors'
+import { ExpiredError, WithoutPermissionError } from '../lib/base-errors'
 import { DateRange } from '../lib/common-types'
 import { calculateReservationPrice } from '../lib/reservation'
 import { carRepository, reservationRepository, userRepository } from '../repositories'
 import { UpdatableReservation } from '../repositories/reservation.repository'
 
-export class CanNotUpdateReservation extends WithoutPermissionError {
+export class CanNotUpdateReservationError extends WithoutPermissionError {
   constructor() {
     super('Without permissions to update this reservation.')
   }
 }
 
-export default async function userUpdateCarReserve(
+export class CanNotUpdateCancelledReservationError extends ExpiredError {
+  constructor() {
+    super('Can not update cancelled reservation')
+  }
+}
+
+export default async function userUpdateCarReservationUseCase(
   userUpdatingId: UserEntity['id'],
   reservationId: ReservationEntity['id'],
   data: UpdatableReservation
 ) {
   const userUpdating = await userRepository.findById(userUpdatingId)
   const reservation = await reservationRepository.findById(reservationId)
+
+  if (reservation.cancelled) {
+    throw new CanNotUpdateCancelledReservationError()
+  }
+
   const canUpdate = userUpdating.role === UserRole.ADMIN || reservation.customer?.id === userUpdatingId
 
   if (!canUpdate) {
-    throw new CanNotUpdateReservation()
+    throw new CanNotUpdateReservationError()
   }
 
   const car = await carRepository.findById(data.carId ?? reservation.carId)

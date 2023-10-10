@@ -41,6 +41,7 @@ const customerReserveCarController = asyncController(async (req: Request, res: R
     res.send(reservation)
   } catch (error) {
     if (error instanceof ReservationDaysIsBelowMinimum) {
+      // Tech debt: review this error, is not unauthorized
       throw new UnauthorizedError([error.message])
     }
 

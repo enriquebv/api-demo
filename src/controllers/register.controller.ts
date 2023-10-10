@@ -28,6 +28,7 @@ const registerController = asyncController(async (req: Request, res: Response) =
     res.send(response)
   } catch (error) {
     // Note: To avoid exposing if an email is used or not, we throw a generic error as bad request.
+    // Tech debt: Use conflict error
     if (error instanceof AlreadyUsedEmailError) {
       throw new BadRequestError(['Registration failed.'])
     }

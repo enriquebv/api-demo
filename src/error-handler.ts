@@ -1,13 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
 import { ZodError } from 'zod'
-import { UserNotFoundError } from './repositories/user.repository'
 import { InvalidPasswordError } from './use-cases/login.use-case'
 import { EXPIRED_TOKEN_ERROR_MESSAGE } from './lib/constants'
-import { CarNotFoundError } from './repositories/cars.repository'
 import { CarReservationIntentWithOverlapError } from './use-cases/reserve-car.use-case'
-import { ReservationNotFound } from './repositories/reservation.repository'
-import { NotFoundError } from './lib/base-errors'
+import { ExpiredError, NotFoundError } from './lib/base-errors'
 
 export class HTTPError extends Error {
   constructor(public code: string, public status: number, public reasons: string[]) {
@@ -98,6 +95,15 @@ export default function expressErrorHandler(error: Error, req: Request, res: Res
     status = 409
     response.error = {
       code: 'Conflict',
+      reasons: [error.message],
+    }
+  }
+
+  const isExpiredError = error instanceof ExpiredError
+  if (isExpiredError) {
+    status = 410
+    response.error = {
+      code: 'Gone',
       reasons: [error.message],
     }
   }

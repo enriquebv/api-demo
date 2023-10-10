@@ -16,16 +16,8 @@ const userCancelReservationController = asyncController(async (req: Request, res
   const cancellingUserId = req.user?.id as UserEntity['id']
   const { id: reservationId } = CancelReservationParamsValidator.parse(req.params)
 
-  try {
-    await userCancelCarReservationUseCase(cancellingUserId, reservationId)
-    res.send()
-  } catch (error) {
-    if (error instanceof AlreadyCancelledReservationError) {
-      throw new HTTPError('Gone', 410, [error.message])
-    }
-
-    throw error
-  }
+  await userCancelCarReservationUseCase(cancellingUserId, reservationId)
+  res.send()
 })
 
 export default userCancelReservationController
