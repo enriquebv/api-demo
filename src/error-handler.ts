@@ -7,42 +7,29 @@ import { EXPIRED_TOKEN_ERROR_MESSAGE } from './lib/constants'
 import { CarNotFoundError } from './repositories/cars.repository'
 import { CarReservationIntentWithOverlapError } from './use-cases/reserve-car.use-case'
 import { ReservationNotFound } from './repositories/reservation.repository'
+import { NotFoundError } from './lib/base-errors'
 
-class HTTPError extends Error {
-  code: string
-  status: number
-
-  constructor(code: string, status: number) {
+export class HTTPError extends Error {
+  constructor(public code: string, public status: number, public reasons: string[]) {
     super(code)
-    this.code = code
-    this.status = status
   }
 }
 
 export class BadRequestError extends HTTPError {
-  reasons: string[]
-
   constructor(reasons: string[]) {
-    super('BadRequest', 400)
-    this.reasons = reasons
+    super('BadRequest', 400, reasons)
   }
 }
 
 export class UnauthorizedError extends HTTPError {
-  reasons: string[]
-
   constructor(reasons: string[]) {
-    super('Unauthorized', 401)
-    this.reasons = reasons
+    super('Unauthorized', 401, reasons)
   }
 }
 
 export class ForbiddenError extends HTTPError {
-  reasons: string[]
-
   constructor(reasons: string[]) {
-    super('Forbidden', 403)
-    this.reasons = reasons
+    super('Forbidden', 403, reasons)
   }
 }
 
@@ -63,7 +50,7 @@ export default function expressErrorHandler(error: Error, req: Request, res: Res
     status = error.status
     response.error = {
       code: error.code,
-      reasons: (error as BadRequestError).reasons ?? undefined,
+      reasons: error.reasons,
     }
   }
 
@@ -98,10 +85,7 @@ export default function expressErrorHandler(error: Error, req: Request, res: Res
     }
   }
 
-  // Tech debt: Use a base NotFound exception to detect instance
-  const isNotFoundError =
-    error instanceof UserNotFoundError || error instanceof CarNotFoundError || error instanceof ReservationNotFound
-  if (isNotFoundError) {
+  if (error instanceof NotFoundError) {
     status = 404
     response.error = {
       code: 'NotFound',

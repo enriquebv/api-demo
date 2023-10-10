@@ -113,6 +113,21 @@ describe('car', () => {
     expect(response.body.error.reasons).toContain('body: Body can not be empty.')
   })
 
+  it('/reservation/:id with invalid id fails', async () => {
+    const response = await request(app)
+      .put(`/api/reservation/abc`)
+      .set({ Authorization: `Bearer ${userToken}` })
+      .send({
+        description: 'Car updated',
+        range: {
+          start: '2023-03-15T00:00:00.000Z',
+          end: '2023-07-15T00:00:00.000Z',
+        },
+      })
+
+    expect(response.status).toBe(400)
+  })
+
   it('/reservation/:id success with 200 if body is correct', async () => {
     const response = await request(app)
       .put(`/api/reservation/${lastReservationId}`)
@@ -126,6 +141,33 @@ describe('car', () => {
       })
 
     expect(response.status).toBe(200)
+  })
+
+  it('/reservation/:id/cancel with invalid id fails', async () => {
+    const response = await request(app)
+      .post(`/api/reservation/abc/cancel`)
+      .set({ Authorization: `Bearer ${userToken}` })
+      .send()
+
+    expect(response.status).toBe(400)
+  })
+
+  it('/reservation/:id/cancel with valid id success', async () => {
+    const response = await request(app)
+      .post(`/api/reservation/${lastReservationId}/cancel`)
+      .set({ Authorization: `Bearer ${userToken}` })
+      .send()
+
+    expect(response.status).toBe(200)
+  })
+
+  it('/reservation/:id/cancel fails if reservation is already cancelled', async () => {
+    const response = await request(app)
+      .post(`/api/reservation/${lastReservationId}/cancel`)
+      .set({ Authorization: `Bearer ${userToken}` })
+      .send()
+
+    expect(response.status).toBe(410)
   })
 
   afterAll(() => {

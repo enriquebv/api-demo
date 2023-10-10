@@ -8,6 +8,7 @@ export interface ReservationEntity {
   endsAt: Date
   priceAtReservation: number
   carId: CarEntity['id']
+  cancelled: boolean
   customer?: UserEntity
   car?: CarEntity
 }

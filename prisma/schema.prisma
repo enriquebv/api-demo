@@ -42,6 +42,7 @@ model Reservation {
   priceAtReservation Int
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
+  cancelled Boolean @default(false)
 
   customer User @relation(fields: [customerId], references: [id], onDelete: Cascade)
   car Car @relation(fields: [carId], references: [id], onDelete: Cascade)

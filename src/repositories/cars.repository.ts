@@ -3,8 +3,9 @@ import { CarEntity } from '../entities/car.entity'
 import { DateRange } from '../lib/common-types'
 import { UserEntity } from '../entities/user.entity'
 import { ReservationEntity } from '../entities/reservation.entity'
+import { NotFoundError } from '../lib/base-errors'
 
-export class CarNotFoundError extends Error {
+export class CarNotFoundError extends NotFoundError {
   constructor() {
     super(`Car not found.`)
   }
@@ -59,6 +60,7 @@ export default class CarRepository {
         endsAt: reservation.endsAt,
         priceAtReservation: reservation.priceAtReservation,
         carId: reservation.carId,
+        cancelled: reservation.cancelled,
       })),
     }
   }
@@ -88,6 +90,7 @@ export default class CarRepository {
       endsAt: reservation.endsAt,
       priceAtReservation: reservation.priceAtReservation,
       carId: reservation.carId,
+      cancelled: reservation.cancelled,
     }
   }
 }

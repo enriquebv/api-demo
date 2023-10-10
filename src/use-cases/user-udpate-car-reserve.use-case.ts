@@ -1,11 +1,12 @@
 import { ReservationEntity } from '../entities/reservation.entity'
 import { UserEntity, UserRole } from '../entities/user.entity'
+import { WithoutPermissionError } from '../lib/base-errors'
 import { DateRange } from '../lib/common-types'
 import { calculateReservationPrice } from '../lib/reservation'
 import { carRepository, reservationRepository, userRepository } from '../repositories'
 import { UpdatableReservation } from '../repositories/reservation.repository'
 
-export class CanNotUpdateReservation extends Error {
+export class CanNotUpdateReservation extends WithoutPermissionError {
   constructor() {
     super('Without permissions to update this reservation.')
   }

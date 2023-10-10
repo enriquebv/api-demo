@@ -3,6 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { PrismaErrorCodes } from '../lib/constants'
 import { UserEntity, UserRole, UserToCreateEntity } from '../entities/user.entity'
 import { entityUserRoleToPrismaUserRole, prismaUserRoleToEntityUserRole } from './helpers'
+import { NotFoundError } from '../lib/base-errors'
 
 export class AlreadyUsedEmailError extends Error {
   constructor(email: string) {
@@ -10,7 +11,7 @@ export class AlreadyUsedEmailError extends Error {
   }
 }
 
-export class UserNotFoundError extends Error {
+export class UserNotFoundError extends NotFoundError {
   constructor() {
     super('User not found.')
   }

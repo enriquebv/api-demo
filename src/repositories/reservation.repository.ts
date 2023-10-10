@@ -2,8 +2,9 @@ import { PrismaClient } from '@prisma/client'
 import { UserEntity } from '../entities/user.entity'
 import { ReservationEntity } from '../entities/reservation.entity'
 import { prismaUserRoleToEntityUserRole } from './helpers'
+import { NotFoundError } from '../lib/base-errors'
 
-export class ReservationNotFound extends Error {
+export class ReservationNotFound extends NotFoundError {
   constructor() {
     super('Reservation not found.')
   }
@@ -31,6 +32,7 @@ export default class ReservationRepository {
       endsAt: reservation.endsAt,
       priceAtReservation: reservation.priceAtReservation,
       carId: reservation.carId,
+      cancelled: reservation.cancelled,
       customer: { ...reservation.customer, role: prismaUserRoleToEntityUserRole(reservation.customer.role) },
     }
   }
@@ -48,5 +50,9 @@ export default class ReservationRepository {
       priceAtReservation: reservation.priceAtReservation,
       carId: reservation.carId,
     }
+  }
+
+  async cancel(id: ReservationEntity['id']) {
+    await this.prisma.reservation.update({ where: { id }, data: { cancelled: true } })
   }
 }
