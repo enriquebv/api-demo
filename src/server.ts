@@ -6,6 +6,7 @@ import registerController from './controllers/register.controller'
 import removeUserController from './controllers/remove-user.controller'
 import { withSession, onlyAdmin } from './lib/middlewares'
 import { carsListController } from './controllers/cars-list.controller'
+import customerReserveCarController from './controllers/customer-reserve-car.controller'
 
 export function createServer() {
   const app = express()
@@ -20,6 +21,7 @@ export function createServer() {
   router.delete('/user/:id', withSession, onlyAdmin, removeUserController)
 
   router.get('/car', carsListController)
+  router.post('/car/:id/reserve', withSession, customerReserveCarController)
 
   app.use('/api', router)
 

@@ -2,9 +2,10 @@ import { type Server } from 'http'
 import { Application } from 'express'
 import { UserEntity, UserRole } from '../entities/user.entity'
 import { hashPassword } from '../lib/password'
-import { userRepository } from '../repositories'
+import { carRepository, userRepository } from '../repositories'
 import { createServer } from '../server'
 import createUserStatefulTokenUseCase from '../use-cases/create-user-stateful-token.use-case'
+import { CarEntity } from '../entities/car.entity'
 
 const BASE_PORT = 3000
 
@@ -26,27 +27,21 @@ export async function createTestServer(): Promise<{ app: Application; server: Se
   })
 }
 
-export async function addUser(options: {
-  name: string
-  email: string
-  password: string
-  admin?: boolean
-}): Promise<UserEntity['id']> {
-  const { id } = await userRepository.create({
-    name: options.name,
-    email: options.email,
-    password: await hashPassword(options.password),
+export async function addCar(): Promise<CarEntity['id']> {
+  const { id } = await carRepository.create({
+    name: 'Car Test',
+    pricePerMonth: 100,
   })
-
-  if (options.admin === true) {
-    await userRepository.setRole(id, UserRole.ADMIN)
-  }
 
   return id
 }
 
-export async function getAdminToken(adminId: UserEntity['id']): Promise<string> {
-  return (await createUserStatefulTokenUseCase(adminId)).token
+export async function getUserToken(userId: UserEntity['id']): Promise<string> {
+  return (await createUserStatefulTokenUseCase(userId)).token
+}
+
+export async function getUserIdByEmail(email: string) {
+  return (await userRepository.findByEmail(email)).id
 }
 
 export function strictSchema(schema: {

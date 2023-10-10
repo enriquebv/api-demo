@@ -43,6 +43,6 @@ model Reservation {
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
 
-  customer User @relation(fields: [customerId], references: [id])
-  car Car @relation(fields: [carId], references: [id])
+  customer User @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  car Car @relation(fields: [carId], references: [id], onDelete: Cascade)
 }

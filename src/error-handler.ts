@@ -4,6 +4,8 @@ import { ZodError } from 'zod'
 import { UserNotFoundError } from './repositories/user.repository'
 import { InvalidPasswordError } from './use-cases/login.use-case'
 import { EXPIRED_TOKEN_ERROR_MESSAGE } from './lib/constants'
+import { CarNotFoundError } from './repositories/cars.repository'
+import { CarReservationIntentWithOverlapError } from './use-cases/reserve-car.use-case'
 
 class HTTPError extends Error {
   code: string
@@ -95,11 +97,20 @@ export default function expressErrorHandler(error: Error, req: Request, res: Res
     }
   }
 
-  const isNotFoundError = error instanceof UserNotFoundError
+  const isNotFoundError = error instanceof UserNotFoundError || error instanceof CarNotFoundError
   if (isNotFoundError) {
     status = 404
     response.error = {
       code: 'NotFound',
+      reasons: [error.message],
+    }
+  }
+
+  const isConflictError = error instanceof CarReservationIntentWithOverlapError
+  if (isConflictError) {
+    status = 409
+    response.error = {
+      code: 'Conflict',
       reasons: [error.message],
     }
   }

@@ -2,10 +2,9 @@ import request from 'supertest'
 import { Application } from 'express'
 import { type Server } from 'http'
 import { matchers } from 'jest-json-schema'
-import { userRepository } from '../repositories'
 import { API_ERROR_SCHEMA, API_TOKEN_SCHEMA } from './schemas'
-import { CUSTOMER_LOGIN_FIXTURE, CUSTOMER_REGISTRATION_FIXTURE, ADMIN_FIXTURE } from './fixtures'
-import { addUser, getAdminToken, createTestServer, strictSchema } from './helpers'
+import { CUSTOMER_LOGIN_FIXTURE, CUSTOMER_REGISTRATION_FIXTURE, ADMIN_FIXTURE, ADMIN_ID, CUSTOMER_ID } from './fixtures'
+import { getUserToken, createTestServer, strictSchema, getUserIdByEmail } from './helpers'
 
 expect.extend(matchers)
 
@@ -13,17 +12,14 @@ describe('/api/user', () => {
   let app: Application
   let server: Server
   let adminToken: string
+  let customerToken: string
 
   beforeAll(async () => {
     const testServer = await createTestServer()
     app = testServer.app
     server = testServer.server
-
-    const adminId = await addUser({
-      ...ADMIN_FIXTURE,
-      admin: true,
-    })
-    adminToken = await getAdminToken(adminId)
+    customerToken = await getUserToken(CUSTOMER_ID)
+    adminToken = await getUserToken(ADMIN_ID)
   })
 
   const fetchers = {
@@ -33,10 +29,10 @@ describe('/api/user', () => {
     async login(body: object) {
       return request(app).post('/api/user/login').send(body)
     },
-    async removeUser(id: string) {
+    async removeUser(id: string, token: string) {
       return request(app)
         .delete(`/api/user/${id}`)
-        .set({ Authorization: `Bearer ${adminToken}` })
+        .set({ Authorization: `Bearer ${token}` })
         .send()
     },
   }
@@ -86,7 +82,7 @@ describe('/api/user', () => {
   })
 
   it('/register should returns token if body is valid', async () => {
-    const response = await fetchers.register(CUSTOMER_REGISTRATION_FIXTURE)
+    const response = await fetchers.register({ ...CUSTOMER_REGISTRATION_FIXTURE, email: 'customer2@test.test' })
 
     expect(response.status).toBe(200)
     expect(response.body).toMatchSchema(API_TOKEN_SCHEMA)
@@ -123,25 +119,28 @@ describe('/api/user', () => {
   })
 
   it('/user delete with invalid id returns validation error', async () => {
-    const response = await fetchers.removeUser('10e')
+    const response = await fetchers.removeUser('abc', adminToken)
 
     expect(response.status).toBe(400)
     expect(response.body).toMatchSchema(API_ERROR_SCHEMA)
     expect(response.body.error.reasons).toContain('id: Invalid uuid')
   })
 
+  it('/user delete with valid id but not an admin, returns 403 error', async () => {
+    const response = await fetchers.removeUser(await getUserIdByEmail('customer2@test.test'), customerToken)
+
+    expect(response.status).toBe(403)
+    expect(response.body).toMatchSchema(API_ERROR_SCHEMA)
+    expect(response.body.error.reasons).toContain('Action only for admin users.')
+  })
+
   it('/user delete with valid id returns validation error', async () => {
-    const idToRemove = await addUser({ name: 'TempUser', email: 'temp.user@test.test', password: 'tempuser' })
-    const response = await fetchers.removeUser(String(idToRemove))
+    const response = await fetchers.removeUser(await getUserIdByEmail('customer2@test.test'), adminToken)
 
     expect(response.status).toBe(200)
   })
 
   afterAll(async () => {
     server.close()
-    await Promise.all([
-      userRepository.removeByEmail(CUSTOMER_LOGIN_FIXTURE.email),
-      userRepository.removeByEmail(ADMIN_FIXTURE.email),
-    ])
   })
 })
