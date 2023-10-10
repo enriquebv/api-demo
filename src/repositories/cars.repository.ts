@@ -17,6 +17,16 @@ export default class CarRepository {
     return await this.prisma.car.create({ data: carToCreate })
   }
 
+  async findById(id: CarEntity['id']): Promise<CarEntity> {
+    const car = await this.prisma.car.findFirst({ where: { id } })
+
+    if (car === null) {
+      throw new CarNotFoundError()
+    }
+
+    return car
+  }
+
   async findAll(): Promise<CarEntity[]> {
     const cars = await this.prisma.car.findMany()
 
@@ -44,9 +54,11 @@ export default class CarRepository {
       ...car,
       reservations: car.reservations.map((reservation) => ({
         id: reservation.id,
+        description: reservation.description,
         startsAt: reservation.startsAt,
         endsAt: reservation.endsAt,
         priceAtReservation: reservation.priceAtReservation,
+        carId: reservation.carId,
       })),
     }
   }
@@ -71,9 +83,11 @@ export default class CarRepository {
 
     return {
       id: reservation.id,
+      description: reservation.description,
       startsAt: reservation.startsAt,
       endsAt: reservation.endsAt,
       priceAtReservation: reservation.priceAtReservation,
+      carId: reservation.carId,
     }
   }
 }

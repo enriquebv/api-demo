@@ -1,9 +1,10 @@
 import { Response, Request } from 'express'
 import { z } from 'zod'
 import asyncController from '../lib/async-controller'
-import customerReserveCarUseCase, { ReservationDaysIsBelowMinimum } from '../use-cases/reserve-car.use-case'
+import customerReserveCarUseCase from '../use-cases/reserve-car.use-case'
 import { UserEntity } from '../entities/user.entity'
 import { BadRequestError, UnauthorizedError } from '../error-handler'
+import { ReservationDaysIsBelowMinimum } from '../lib/reservation'
 
 export const ISO_DATE_REGEX = /\d{4}-[01]\d-[0-3]\d/
 
@@ -16,7 +17,7 @@ const ReserveCarBodyValidator = z.object({
     start: z.string().datetime(),
     end: z.string().datetime(),
   }),
-  description: z.string().optional(),
+  description: z.string(),
 })
 
 const customerReserveCarController = asyncController(async (req: Request, res: Response) => {
@@ -36,7 +37,7 @@ const customerReserveCarController = asyncController(async (req: Request, res: R
   }
 
   try {
-    const reservation = await customerReserveCarUseCase(customerId, description ?? '', carId, range)
+    const reservation = await customerReserveCarUseCase(customerId, description, carId, range)
     res.send(reservation)
   } catch (error) {
     if (error instanceof ReservationDaysIsBelowMinimum) {

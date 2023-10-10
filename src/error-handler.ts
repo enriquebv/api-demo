@@ -6,6 +6,7 @@ import { InvalidPasswordError } from './use-cases/login.use-case'
 import { EXPIRED_TOKEN_ERROR_MESSAGE } from './lib/constants'
 import { CarNotFoundError } from './repositories/cars.repository'
 import { CarReservationIntentWithOverlapError } from './use-cases/reserve-car.use-case'
+import { ReservationNotFound } from './repositories/reservation.repository'
 
 class HTTPError extends Error {
   code: string
@@ -97,7 +98,9 @@ export default function expressErrorHandler(error: Error, req: Request, res: Res
     }
   }
 
-  const isNotFoundError = error instanceof UserNotFoundError || error instanceof CarNotFoundError
+  // Tech debt: Use a base NotFound exception to detect instance
+  const isNotFoundError =
+    error instanceof UserNotFoundError || error instanceof CarNotFoundError || error instanceof ReservationNotFound
   if (isNotFoundError) {
     status = 404
     response.error = {

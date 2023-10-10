@@ -74,15 +74,16 @@ Previamente [compilado el código TypeScript](#compilar-typescript), se lanzarí
   - [x] Contraseñas cifradas
   - [x] Se devuelven tokens en JWT al hacer login.
 - **Operaciones CRUD:**
-  - [ ] Crear reservas como usuario.
-    - [ ] Fecha de reserva (inicio, fin).
-    - [ ] Color deseado.
-    - Las reservas tendran un precio computado en base a los dias reservados. El precio por día sera estatico.
-    - Las reservas tendran un estado `status` computado en base a las fecha de las reserva.
-  - [ ] Editar reservas.
-    - [ ] Cambiar fecha
-    - [ ] Cambiar color
-  - [ ] "Cancelar" reservas antes de que sucedan.
+  - [x] Crear reservas como usuario.
+    - [x] Fecha de reserva (inicio, fin).
+    - [x] Las reservas tendran un precio computado en base a los meses reservados.
+    - [x] Se debe reservar minimo por 30 días.
+    - [x] Los periodos de reserva deben ser cada 30 días. Si se eligen 31 días, se reservan 2 meses (60 días).
+    - [x] Las reservas tendran un estado `status` computado en base a las fecha de las reserva.
+  - [x] Editar reservas.
+    - [x] Cambiar fecha de reserva (debe cambiar el precio)
+    - [x] Cambiar coche (debe cambiar el precio)
+  - [ ] "Cancelar" reservas
     - [ ] Como usuario las propias, si se hace 30 minutos antes (o anterior) de que empiece la misma.
     - [ ] Como admin cualquiera.
 - **Sistema de busqueda**:

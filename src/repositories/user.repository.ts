@@ -2,6 +2,7 @@ import { PrismaClient, UserRole as PrismaUserRole, User } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { PrismaErrorCodes } from '../lib/constants'
 import { UserEntity, UserRole, UserToCreateEntity } from '../entities/user.entity'
+import { entityUserRoleToPrismaUserRole, prismaUserRoleToEntityUserRole } from './helpers'
 
 export class AlreadyUsedEmailError extends Error {
   constructor(email: string) {
@@ -32,7 +33,7 @@ export default class UserRepository {
       name: found.name,
       email: found.email,
       password: found.password,
-      role: this.prismaToEntityRole(found.role),
+      role: prismaUserRoleToEntityUserRole(found.role),
     }
   }
 
@@ -50,7 +51,7 @@ export default class UserRepository {
       name: found.name,
       email: found.email,
       password: found.password,
-      role: this.prismaToEntityRole(found.role),
+      role: prismaUserRoleToEntityUserRole(found.role),
     }
 
     return entity
@@ -71,7 +72,7 @@ export default class UserRepository {
         name,
         email,
         password,
-        role: this.prismaToEntityRole(role),
+        role: prismaUserRoleToEntityUserRole(role),
       }
     } catch (error) {
       const isEmailUniqueError =
@@ -88,7 +89,7 @@ export default class UserRepository {
   }
 
   async setRole(id: UserEntity['id'], role: UserRole) {
-    await this.prisma.user.update({ where: { id }, data: { role: this.entityRoleToPrisma(role) } })
+    await this.prisma.user.update({ where: { id }, data: { role: entityUserRoleToPrismaUserRole(role) } })
   }
 
   async removeById(id: UserEntity['id']) {
@@ -119,23 +120,5 @@ export default class UserRepository {
 
       throw error
     }
-  }
-
-  private prismaToEntityRole(role: User['role']): UserEntity['role'] {
-    const ROLES_DICTIONARY = {
-      [PrismaUserRole.ADMIN]: UserRole.ADMIN,
-      [PrismaUserRole.CUSTOMER]: UserRole.CUSTOMER,
-    }
-
-    return ROLES_DICTIONARY[role]
-  }
-
-  private entityRoleToPrisma(role: UserEntity['role']): User['role'] {
-    const ROLES_DICTIONARY = {
-      [UserRole.ADMIN]: PrismaUserRole.ADMIN,
-      [UserRole.CUSTOMER]: PrismaUserRole.CUSTOMER,
-    }
-
-    return ROLES_DICTIONARY[role]
   }
 }
