@@ -1,5 +1,18 @@
 # api-demo
 
+Servicio de ejemplo con Express, Prisma (ORM), Postgres y TypeScript.
+
+## Funcionalidades:
+
+- Registrarse (como cliente)
+- Hacer login (como usuario o admin)
+- Poder crear reservas de coches (_el recurso de ejemplo elegido_).
+- Se puede editar y cancelar estas reservas.
+- Se puede buscar las reservas propias, o como admin, las de todos los clientes, a traves de diferentes criterios (rangos de fecha, precio, coches, texto de la descripción, etc).
+- Migraciones y seeders.
+
+## Indice
+
 - [Como usar](#como-usar)
   - [Prerequisitos](#prerequisitos)
   - [Instalación](#instalación)
@@ -16,17 +29,6 @@
 - [Arquitectura](#arquitectura)
 - [Postman](#postman)
 - [Roadmap](#roadmap)
-
-Servicio de ejemplo con Express, Prisma (ORM), Postgres y TypeScript.
-
-Funcionalidades:
-
-- Registrarse (como cliente)
-- Hacer login (como usuario o admin)
-- Poder crear reservas de coches (_el recurso de ejemplo elegido_).
-- Se puede editar y cancelar estas reservas.
-- Se puede buscar las reservas propias, o como admin, las de todos los clientes, a traves de diferentes criterios (rangos de fecha, precio, coches, texto de la descripción, etc).
-- Migraciones y seeders.
 
 ## Como usar
 
