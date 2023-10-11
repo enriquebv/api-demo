@@ -102,7 +102,6 @@ Previamente [compilado el código TypeScript](#compilar-typescript), se lanzarí
   - [ ] Pipeline de CI (nice to have)
 - **Seguridad**
   - [x] Error handling.
-    - [ ] Log de errores con UUID.
   - [x] Validar datos desde el exterior.
   - [x] CORS
   - [x] HTTPS
