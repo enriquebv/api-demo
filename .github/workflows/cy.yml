@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      JWT_SECRET: postgresql://user:password@localhost:5432/api-db?schema=public
 
     steps:
       - name: Checkout repository
