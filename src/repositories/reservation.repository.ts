@@ -68,7 +68,6 @@ export default class ReservationRepository {
   }
 
   async findMany(fields: FindManyFields): Promise<ReservationEntity[]> {
-    console.log({ startsAt: { gte: fields.date?.start }, endsAt: { lte: fields.date?.end } })
     const list = await this.prisma.reservation.findMany({
       where: {
         startsAt: { gte: fields.date?.start },

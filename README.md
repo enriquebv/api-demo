@@ -97,6 +97,7 @@ Previamente [compilado el código TypeScript](#compilar-typescript), se lanzarí
   - [x] ORM (Prisma)
 - **Tests**
   - [x] Implementar tests de integración
+  - [x] Implementar tests unitarios
   - [ ] Crear informe de cobertura
   - [ ] Pipeline de CI (nice to have)
 - **Seguridad**
