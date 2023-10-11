@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export default function getEnvVariable(variable: 'PORT' | 'JWT_SECRET'): string {
+export default function getEnvVariable(variable: 'PORT' | 'JWT_SECRET' | 'ALLOWED_ORIGINS'): string {
   const value = process.env[variable]
 
   if (value === undefined) {

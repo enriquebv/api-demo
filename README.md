@@ -104,5 +104,5 @@ Previamente [compilado el código TypeScript](#compilar-typescript), se lanzarí
   - [x] Error handling.
     - [ ] Log de errores con UUID.
   - [x] Validar datos desde el exterior.
-  - [ ] CORS
-  - [ ] HTTPS
+  - [x] CORS
+  - [x] HTTPS
