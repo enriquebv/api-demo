@@ -10,7 +10,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      JWT_SECRET: postgresql://user:password@localhost:5432/api-db?schema=public
+      NODE_ENV: staging
+      JWT_SECRET: 1234
+      DATABASE_URL: postgresql://user:password@localhost:5432/api-db?schema=public
+      ALLOWED_ORIGINS: localhost:3000,example.com
 
     steps:
       - name: Checkout repository
@@ -21,7 +24,7 @@ jobs:
         with:
           node-version: 20.x
 
-      - name: Use MongoDB
+      - name: Use DB
         run: ./scripts/start-db.sh
 
       - name: Install dependencies
