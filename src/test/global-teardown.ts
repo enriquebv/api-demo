@@ -1,3 +1,5 @@
+import 'tsconfig-paths/register'
+
 import { PrismaClient } from '@prisma/client'
 import { ADMIN_ID, CAR_ID, CUSTOMER_ID } from './fixtures'
 

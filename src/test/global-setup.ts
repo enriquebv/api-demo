@@ -1,3 +1,5 @@
+import 'tsconfig-paths/register'
+
 import { PrismaClient, UserRole } from '@prisma/client'
 import { hashPassword } from '../lib/password'
 import { ADMIN_ID, ADMIN_FIXTURE, CUSTOMER_ID, CUSTOMER_REGISTRATION_FIXTURE, CAR_ID } from './fixtures'
