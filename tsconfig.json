@@ -10,5 +10,6 @@
     "outDir": "./dist",
     "types": ["./src/types.d.ts", "@types/jest"]
   },
-  "exclude": ["./prisma/**/*"]
+  "exclude": ["./prisma/**/*"],
+  "include": ["./src/test/global-setup.ts", "./src/test/global-teardown.ts"]
 }
