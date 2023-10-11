@@ -1,5 +1,22 @@
 # api-demo
 
+- [Como usar](#como-usar)
+  - [Prerequisitos](#prerequisitos)
+  - [Instalación](#instalación)
+  - [Como desarrollar](#como-desarrollar)
+  - [Comandos utiles](#comandos-utiles)
+    - [Modo desarrollo](#modo-desarrollo)
+    - [Lanzar los tests](#lanzar-los-tests)
+    - [Base de datos](#base-de-datos)
+      - [Lanzar migraciones](#lanzar-migraciones)
+      - [Hidratar la base de datos](#hidratar-la-base-de-datos)
+      - [Inspeccionar la base de datos](#inspeccionar-la-base-de-datos)
+    - [Compilar TypeScript](#compilar-typescript)
+    - [Ejecutar producción](#ejecutar-producción)
+- [Arquitectura](#arquitectura)
+- [Postman](#postman)
+- [Roadmap](#roadmap)
+
 Servicio de ejemplo con Express, Prisma (ORM), Postgres y TypeScript.
 
 Funcionalidades:
@@ -10,24 +27,6 @@ Funcionalidades:
 - Se puede editar y cancelar estas reservas.
 - Se puede buscar las reservas propias, o como admin, las de todos los clientes, a traves de diferentes criterios (rangos de fecha, precio, coches, texto de la descripción, etc).
 - Migraciones y seeders.
-
-- [api-demo](#api-demo)
-  - [Como usar](#como-usar)
-    - [Prerequisitos](#prerequisitos)
-    - [Instalación](#instalación)
-    - [Como desarrollar](#como-desarrollar)
-    - [Comandos utiles](#comandos-utiles)
-      - [Modo desarrollo](#modo-desarrollo)
-      - [Lanzar los tests](#lanzar-los-tests)
-      - [Base de datos](#base-de-datos)
-        - [Lanzar migraciones](#lanzar-migraciones)
-        - [Hidratar la base de datos](#hidratar-la-base-de-datos)
-        - [Inspeccionar la base de datos](#inspeccionar-la-base-de-datos)
-      - [Compilar TypeScript](#compilar-typescript)
-      - [Ejecutar producción](#ejecutar-producción)
-  - [Arquitectura](#arquitectura)
-  - [Postman](#postman)
-  - [Roadmap](#roadmap)
 
 ## Como usar
 
