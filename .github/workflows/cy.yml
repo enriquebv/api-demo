@@ -27,11 +27,11 @@ jobs:
       - name: Use DB
         run: ./scripts/start-db.sh
 
-      - name: Run migrations
-        run: npm run db:migrate
-
       - name: Install dependencies
         run: npm i
+
+      - name: Run migrations
+        run: npm run db:migrate
 
       - name: Run tests
         run: npm run test
