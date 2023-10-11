@@ -10,7 +10,7 @@
     "dev": "nodemon ./src/index.ts",
     "build": "tsc",
     "start": "npm run build && node ./dist/index.js --ssl",
-    "test": "jest",
+    "test": "jest ./src",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:inspect": "prisma studio"
