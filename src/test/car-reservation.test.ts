@@ -170,6 +170,17 @@ describe('car', () => {
     expect(response.status).toBe(410)
   })
 
+  it('/reservation/ search contains customer recent reservation', async () => {
+    const response = await request(app)
+      .get(`/api/reservation/`)
+      .set({ Authorization: `Bearer ${userToken}` })
+      .send()
+
+    expect(response.status).toBe(200)
+    expect(response.body.map((reservation: { id: string }) => reservation.id)).toContain(lastReservationId)
+    expect(response.body.map((reservation: { carId: string }) => reservation.carId)).toContain(CAR_ID)
+  })
+
   afterAll(() => {
     server.close()
   })

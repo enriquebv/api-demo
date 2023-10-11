@@ -1,0 +1,339 @@
+{
+	"info": {
+		"_postman_id": "c03b5fda-77cd-4206-b7fe-7483d495a8c5",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29828320"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Hola\",\n    \"email\": \"test@test.com\",\n    \"password\": \"Test1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"admin@test.com\",\n    \"password\": \"Admin1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove user (only admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgzLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTY4NzY0NzIsImV4cCI6MTY5NzQ4MTI3Mn0.k_EZwDt8CarpzE7EAk675K-AVI3vQpBORLfTLQVLRjE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/user/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List cars",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/car",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"car"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reserve car",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImYzYWZjMDAwLWY2NjYtNDZjMi05N2JjLWE3NmEzMjI5ZmM0OCIsImlhdCI6MTY5Njk3MTk1NSwiZXhwIjoxNjk3NTc2NzU1fQ.ljAQLmMPH_xc0FDGfkpmQIAqHsvOD_MTDpjC-nKAu28",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"range\": {\n        \"start\": \"2024-03-15T00:00:00.000Z\",\n        \"end\": \"2025-07-15T00:00:00.000Z\"\n    },\n    \"description\": \"Reserva de coche\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/car/:id/reservation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"car",
+						":id",
+						"reservation"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "52f10c35-5366-42de-b68c-0b466be48909"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update car reservation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImYzYWZjMDAwLWY2NjYtNDZjMi05N2JjLWE3NmEzMjI5ZmM0OCIsImlhdCI6MTY5Njk3MTk1NSwiZXhwIjoxNjk3NTc2NzU1fQ.ljAQLmMPH_xc0FDGfkpmQIAqHsvOD_MTDpjC-nKAu28",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"range\": {\n        \"end\": \"2030-01-01T00:00:00.000Z\"\n    },\n    \"carId\": \"e9b427fe-77f4-49f6-b2d5-4575a64dab3d\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/reservation/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"reservation",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "f078de55-1d88-4221-a70d-9ee304535232"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel car reservation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImYzYWZjMDAwLWY2NjYtNDZjMi05N2JjLWE3NmEzMjI5ZmM0OCIsImlhdCI6MTY5Njk3MTk1NSwiZXhwIjoxNjk3NTc2NzU1fQ.ljAQLmMPH_xc0FDGfkpmQIAqHsvOD_MTDpjC-nKAu28",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"range\": {\n        \"end\": \"2030-01-01T00:00:00.000Z\"\n    },\n    \"carId\": \"e9b427fe-77f4-49f6-b2d5-4575a64dab3d\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/reservation/:id/cancel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"reservation",
+						":id",
+						"cancel"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "051787f7-e432-497f-a813-ead8506b0780"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search reservation",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQwNThlYTM2LTQ5YzItNDU1OS04NmQ4LWI0OThiMzg3NmM4NiIsImlhdCI6MTY5NzA1NTk5MiwiZXhwIjoxNjk3NjYwNzkyfQ.rvhy-atE74MLO_efn-r1TjogBBrNS9xqY3wlHe_G78w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"range\": {\n        \"end\": \"2030-01-01T00:00:00.000Z\"\n    },\n    \"carId\": \"e9b427fe-77f4-49f6-b2d5-4575a64dab3d\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/reservation/?car=5e659916-3822-445a-a339-b4a90f310e4d&car=6f8ab9f0-3a06-4537-8105-e0c13b563cb2&car=ce19a006-7109-4221-b562-3b2d6ac53ddb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"reservation",
+						""
+					],
+					"query": [
+						{
+							"key": "startsAfter",
+							"value": "2023-01-01T00:00:00.000Z",
+							"disabled": true
+						},
+						{
+							"key": "endsBefore",
+							"value": "2023-02-01T00:00:00.000Z",
+							"disabled": true
+						},
+						{
+							"key": "car",
+							"value": "5e659916-3822-445a-a339-b4a90f310e4d"
+						},
+						{
+							"key": "car",
+							"value": "6f8ab9f0-3a06-4537-8105-e0c13b563cb2"
+						},
+						{
+							"key": "car",
+							"value": "ce19a006-7109-4221-b562-3b2d6ac53ddb"
+						},
+						{
+							"key": "cancelled",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

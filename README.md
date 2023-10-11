@@ -79,21 +79,19 @@ Previamente [compilado el código TypeScript](#compilar-typescript), se lanzarí
     - [x] Las reservas tendran un precio computado en base a los meses reservados.
     - [x] Se debe reservar minimo por 30 días.
     - [x] Los periodos de reserva deben ser cada 30 días. Si se eligen 31 días, se reservan 2 meses (60 días).
-    - [x] Las reservas tendran un estado `status` computado en base a las fecha de las reserva.
   - [x] Editar reservas.
-    - [ ] No se puede editar una reserva cancelada (ni por admins).
+    - [x] No se puede editar una reserva cancelada (ni por admins).
     - [x] Cambiar fecha de reserva (debe cambiar el precio)
     - [x] Cambiar coche (debe cambiar el precio)
   - [x] "Cancelar" reservas
-    - [x] Como usuario las propias, si se hace 30 minutos antes (o anterior) de que empiece la misma.
+    - [x] Como usuario las propias.
     - [x] Como admin cualquiera.
 - **Sistema de busqueda**:
-  - Por propiedades:
-    - Fecha (rango)
-    - Precio (rango)
-    - Estado (multiple)
-  - [ ] Busqueda incluyente (las reservas deben tener todas las propiedades escogidas para mostrarse.)
-  - [ ] Busqueda excluyente (las reservas deben tener todas las propiedades escogidas para mostrarse)
+  - Busqueda incluyente de reservas por:
+    - [x] Fecha (rango)
+    - [x] Precio (rango)
+    - [x] Estado (cancelado o no)
+    - [x] Como admin se pueden buscar todas, como usuario las propias.
 - **Base de datos**
   - [x] Postgres
   - [x] ORM (Prisma)
