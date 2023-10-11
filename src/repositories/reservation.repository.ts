@@ -22,6 +22,7 @@ export interface FindManyFields {
   cars?: CarEntity['id'][]
   cancelled?: boolean
   customerId?: UserEntity['id']
+  description?: string
 }
 
 export default class ReservationRepository {
@@ -79,6 +80,7 @@ export default class ReservationRepository {
         customerId: fields.customerId,
         cancelled: fields.cancelled,
         ...(fields.cars ? { carId: { in: fields.cars } } : {}),
+        ...(fields.description ? { description: { search: fields.description } } : {}),
       },
     })
 

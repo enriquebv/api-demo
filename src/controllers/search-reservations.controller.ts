@@ -13,6 +13,7 @@ const SearchReservationsQueryValidator = z.object({
   minPrice: z.coerce.number().optional(),
   maxPrice: z.coerce.number().optional(),
   cancelled: z.coerce.boolean().optional(),
+  description: z.string().optional(),
 })
 
 const searchReservationsController = asyncController(async (req: Request, res: Response) => {
@@ -35,6 +36,7 @@ const searchReservationsController = asyncController(async (req: Request, res: R
     cars: typeof query.car === 'string' ? [query.car] : query.car,
     cancelled: query.cancelled,
     customerId: user.role !== UserRole.ADMIN ? user.id : undefined,
+    description: query.description,
   }
 
   const reservations = await reservationRepository.findMany(fields)

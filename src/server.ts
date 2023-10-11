@@ -25,12 +25,9 @@ export function createServer() {
   app.use(
     cors({
       origin: (origin, callback) => {
-        if (!origin && getEnvVariable('NODE_ENV') === 'test') {
-          return callback(null, true)
-        }
-
+        // Origin is empty in test or postman
         if (!origin) {
-          return callback(new ForbiddenError(['Not allowed by CORS']))
+          return callback(null, true)
         }
 
         if (!origins.includes(origin)) {

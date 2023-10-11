@@ -1,6 +1,15 @@
-# api-demo-revel
+# api-demo
 
-Prueba tecnica para senior back-end developer en Node.js
+Servicio de ejemplo con Express, Prisma (ORM), Postgres y TypeScript.
+
+Funcionalidades:
+
+- Registrarse (como cliente)
+- Hacer login (como usuario o admin)
+- Poder crear reservas de coches (_el recurso de ejemplo elegido_).
+- Se puede editar y cancelar estas reservas.
+- Se puede buscar las reservas propias, o como admin, las de todos los clientes, a traves de diferentes criterios (rangos de fecha, precio, coches, texto de la descripción, etc).
+- Migraciones y seeders.
 
 ## Como usar
 
@@ -19,18 +28,8 @@ Prueba tecnica para senior back-end developer en Node.js
 
 1. Seguir los pasos de [instalación](#instalación).
 2. Ejecutar el comando `docker compose up -d` para levantar una base de datos Postgres local.
-3. Ejecutar el comando [`npm run dev`](#modo-desarrollo) para levantar el servidor.
-
-### Como desplegar en producción
-
-1. Seguir los pasos de [instalación](#instalación).
-2. Configurar las variable de entorno:
-
-   - `DATABASE_URL`: La URL a la base de datos postgres de producción.
-   - `JWT_SECRET`: Una clave segura para firmar los tokens.
-   - `NODE_ENV`: En producción siempre debe ser `production`.
-
-3. Ejecutar el comando [`npm run dev`](#modo-desarrollo) para levantar el servidor.
+3. Ejecutar migraciones `npm run db:migrate` (quizas debas esperar a que el servidor Postgres esté 100% levantado).
+4. Ejecutar el comando [`npm run dev`](#modo-desarrollo) para levantar el servidor.
 
 ### Comandos utiles
 
@@ -50,23 +49,43 @@ npm run test
 
 ##### Lanzar migraciones
 
-Ante cualquier cambio que se haya realizado en la base de datos (tablas, columnas, etc), se añadiran archivos `.sql` que contengan esos cambios. Para aplicarlos, con ejecutar el comando `npm run db:migrate` actualizará al base de datos.
+```bash
+npm run db:migrate
+```
+
+Ante cualquier cambio que se haya realizado en la base de datos (tablas, columnas, etc), se añadiran archivos `.sql` que contengan esos cambios.
 
 ##### Hidratar la base de datos
 
-Si se necesitan, se pueden añadir datos de ejemplo introducidos previamente en un [_seeder_](./prisma/seed.ts), ejecutando el comando `npm run db:seed`. Actualmente se añade una cuenta de administrador con el email `admin@test.com` y la contraseña `Admin1` (con propositos demostrativos, no usar en producción).
+```bash
+npm run db:seed
+```
+
+Si se necesitan, se pueden añadir datos de ejemplo introducidos previamente en un [_seeder_](./prisma/seed.ts).
 
 ##### Inspeccionar la base de datos
 
-Aunque se puede utilizar herramientas como DataGrip o DBeaver para inspeccionar la base de datos postgres, no es necesario en este proyecto. Ejecutando el comando `npm run db:inspect` se accederá a un editor de base de datos en el navegador, para realizar operaciones rapidas (eliminar registros, cambiar datos, etc).
+```bash
+npm run db:inspect
+```
+
+Levanta en el puerto :5555 un editor de base de datos en el navegador.
 
 #### Compilar TypeScript
 
-En producción se ejecuta código JavaScript, mientras que en desarrollo se desarrolla con TypeScript. Para compilar este codigo a JavaScript, ejecutaremos `npm run build`. Esto generará una carpeta `dist`, que es una copia de `src` pero en JavaScript. Si existen errores de tipos fallará esta compilación de forma intencionada, no debería desplegarse código con errores.
+```bash
+npm run build
+```
+
+Esto generará una carpeta `dist`, que es una copia de `src` pero en JavaScript. Si existen errores de tipos fallará esta compilación de forma intencionada, no debería desplegarse código con errores.
 
 #### Ejecutar producción
 
-Previamente [compilado el código TypeScript](#compilar-typescript), se lanzaría el comando `npm run start`.
+```bash
+npm run start
+```
+
+Previamente [compilado el código TypeScript](#compilar-typescript).
 
 ## Roadmap
 
