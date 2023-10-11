@@ -11,6 +11,24 @@ Funcionalidades:
 - Se puede buscar las reservas propias, o como admin, las de todos los clientes, a traves de diferentes criterios (rangos de fecha, precio, coches, texto de la descripción, etc).
 - Migraciones y seeders.
 
+- [api-demo](#api-demo)
+  - [Como usar](#como-usar)
+    - [Prerequisitos](#prerequisitos)
+    - [Instalación](#instalación)
+    - [Como desarrollar](#como-desarrollar)
+    - [Comandos utiles](#comandos-utiles)
+      - [Modo desarrollo](#modo-desarrollo)
+      - [Lanzar los tests](#lanzar-los-tests)
+      - [Base de datos](#base-de-datos)
+        - [Lanzar migraciones](#lanzar-migraciones)
+        - [Hidratar la base de datos](#hidratar-la-base-de-datos)
+        - [Inspeccionar la base de datos](#inspeccionar-la-base-de-datos)
+      - [Compilar TypeScript](#compilar-typescript)
+      - [Ejecutar producción](#ejecutar-producción)
+  - [Arquitectura](#arquitectura)
+  - [Postman](#postman)
+  - [Roadmap](#roadmap)
+
 ## Como usar
 
 ### Prerequisitos
@@ -87,6 +105,17 @@ npm run start
 
 Previamente [compilado el código TypeScript](#compilar-typescript).
 
+## Arquitectura
+
+Si quieres comprobar la estructura del código en el proyecto [consulta este documento](./ARCHITECTURE.md).
+
+## Postman
+
+Para probar el API disponible, se puede utilizar la [colección añadida en el repositorio](./postman.json).
+
+- Hay que recordar que ciertos endpoints utilizan un token bearer, generado previamente por el endpoint de login. Una vez generado, es necesario actualizar esa cabecera `Authorization` en cada endpoint.
+- Lanzando el seeder se genera el usuario administrador en la base de datos con el que poder crear un token de administrador al hacer login.
+
 ## Roadmap
 
 - **Registro y login de usuarios**
@@ -117,8 +146,6 @@ Previamente [compilado el código TypeScript](#compilar-typescript).
 - **Tests**
   - [x] Implementar tests de integración
   - [x] Implementar tests unitarios
-  - [ ] Crear informe de cobertura
-  - [ ] Pipeline de CI (nice to have)
 - **Seguridad**
   - [x] Error handling.
   - [x] Validar datos desde el exterior.
