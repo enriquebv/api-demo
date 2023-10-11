@@ -5,6 +5,7 @@ import { InvalidPasswordError } from './use-cases/login.use-case'
 import { EXPIRED_TOKEN_ERROR_MESSAGE } from './lib/constants'
 import { CarReservationIntentWithOverlapError } from './use-cases/reserve-car.use-case'
 import { ExpiredError, NotFoundError } from './lib/base-errors'
+import getEnvVariable from './lib/env'
 
 export class HTTPError extends Error {
   constructor(public code: string, public status: number, public reasons: string[]) {
@@ -31,7 +32,7 @@ export class ForbiddenError extends HTTPError {
 }
 
 export default function expressErrorHandler(error: Error, req: Request, res: Response, next: NextFunction) {
-  if (process.env.NODE_ENV === 'development') {
+  if (getEnvVariable('NODE_ENV') === 'development') {
     console.error(error)
   }
 

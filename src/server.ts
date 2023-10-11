@@ -3,7 +3,7 @@ import express, { Router } from 'express'
 import { certificateFor } from 'devcert'
 import cors from 'cors'
 
-import expressErrorHandler from './error-handler'
+import expressErrorHandler, { ForbiddenError } from './error-handler'
 import { withSession, onlyAdmin } from './lib/middlewares'
 import getEnvVariable from './lib/env'
 
@@ -25,12 +25,16 @@ export function createServer() {
   app.use(
     cors({
       origin: (origin, callback) => {
+        if (!origin && getEnvVariable('NODE_ENV') === 'test') {
+          return callback(null, true)
+        }
+
         if (!origin) {
-          return callback(new Error('Not allowed by CORS'))
+          return callback(new ForbiddenError(['Not allowed by CORS']))
         }
 
         if (!origins.includes(origin)) {
-          return callback(new Error('Not allowed by CORS'))
+          return callback(new ForbiddenError(['Not allowed by CORS']))
         }
 
         callback(null, true)
