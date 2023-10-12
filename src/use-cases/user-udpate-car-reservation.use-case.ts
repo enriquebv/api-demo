@@ -36,6 +36,11 @@ export default async function userUpdateCarReservationUseCase(
     throw new CanNotUpdateReservationError()
   }
 
+  // Tech debt: Create and update can be the same operation, and need the same procedure:
+  // - Check if car is free to be booked at desired date
+  // - Calculate prices
+  // This is enough reason to centralize the operations and avoid repetitions.
+
   const car = await carRepository.findById(data.carId ?? reservation.carId)
   const range: DateRange = {
     start: data.startsAt ?? reservation.startsAt,
