@@ -152,3 +152,8 @@ Para probar el API disponible, se puede utilizar la [colección añadida en el r
   - [x] Validar datos desde el exterior.
   - [x] CORS
   - [x] HTTPS
+- **Documentación:**
+  - [x] Readme
+  - [x] Arquitectura
+  - [x] Postman
+  - [ ] OpenAPI
